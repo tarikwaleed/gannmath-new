@@ -1,5 +1,6 @@
 from allauth.account.views import SignupView as AllauthSignupView, LoginView, LogoutView
-from django.urls import reverse_lazy
+from django.shortcuts import render
+from django.views.generic import TemplateView
 
 
 class SignupView(AllauthSignupView):
@@ -12,3 +13,8 @@ class LoginView(LoginView):
 
 class LogoutView(LogoutView):
     template_name = 'account/logout.html'
+
+
+class HomePageView(TemplateView):
+    template_name = 'home.html'
+
