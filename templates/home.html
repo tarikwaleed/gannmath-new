@@ -1,5 +1,15 @@
 {% if user.is_authenticated %}
-<h1>Welcome, {{ user.username }}</h1>
-{% else %}
-<h1>Not logged in</h1>
-{% endif %}
+<h1>Welcome, {{ user }}<h1>
+
+        {% else %}
+        <h1>Not logged in</h1>
+        {% endif %}
+
+        {% if user.subscription.is_active %}
+        <h1>Subscriped
+            <h1>
+
+                {% else %}
+                <h1>Not subscriped</h1>
+                {% endif %}
+                <a href="{% url 'our_service' %}">Our Service</a>
