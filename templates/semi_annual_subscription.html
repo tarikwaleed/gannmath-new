@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>PayPal Subscription</title>
+</head>
+<body>
+  <h1>Semi-Annual Subscription</h1>
+  <h2>$750</h2>
+  <script src="https://www.paypal.com/sdk/js?client-id={{client_id}}&vault=true&intent=subscription"></script>
+
+  <div id="paypal-button-container"></div>
+  <script>
+    paypal.Buttons({
+      createSubscription: function (data, actions) {
+        return actions.subscription.create({
+          'plan_id': '{{plan_id}}' // Creates the subscription
+        });
+      },
+      onApprove: function (data, actions) {
+        alert('You have successfully subscribed to ' + data.subscriptionID); // Optional message given to subscriber
+      }
+
+    }).render('#paypal-button-container'); // Renders the PayPal button
+  </script>
+</body>
+</html>
