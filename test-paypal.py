@@ -34,3 +34,11 @@ def create_plan(headers):
     data_dict = json.loads(data)
     response = requests.post('https://api-m.sandbox.paypal.com/v1/billing/plans', headers=headers, data=data)
     return response
+
+
+def list_plans(headers):
+    response = requests.get('https://api-m.sandbox.paypal.com/v1/billing/plans', headers=headers)
+    return response.json()
+
+plans=list_plans(headers)
+print(plans['plans'])

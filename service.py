@@ -1,17 +1,18 @@
 import math
 
-x = 4000 # this is input field from html
-y = 4008# this is input field from html
-z = 100# this is input field from html
+x = 4000  # this is input field from html
+y = 4008  # this is input field from html
+z = 100  # this is input field from html
 w = x * z
 r = y * z
-e = abs((w ** 0.5) - (r ** 0.5)) / 0.005555
+e = abs((w**0.5) - (r**0.5)) / 0.005555
 while not (43 <= e < 180):
     z = int(input())
     w = x * z
     r = y * z
     e = ((abs(w) ** 0.5) - (abs(r) ** 0.5)) / 0.005555
 a = None
+
 
 if 43 <= e < 58:
     a = 45
@@ -58,15 +59,14 @@ elif 178 <= e < 182:
 else:
     a = 1
 
-levels = [.25, .383, .5, .618, .75, 1]
+levels = [0.25, 0.383, 0.5, 0.618, 0.75, 1]
 cs = []
 for l in levels:
     cs.append((a * 4 * l) / 180)
-results=[]
+results = []
 for c in cs:
     if x / y > 1:
         result = round(math.pow(math.sqrt(w) - c, 2) / z, 5)
     else:
         result = round(math.pow(math.sqrt(w) + c, 2) / z, 5)
     results.append(result)
-
