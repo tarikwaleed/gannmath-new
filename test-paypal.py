@@ -9,7 +9,9 @@ load_dotenv()
 SANDBOX_CLIENT_ID = os.environ.get('SANDBOX_CLIENT_ID')
 SANDBOX_CLIENT_SECRET = os.environ.get('SANDBOX_CLIENT_SECRET')
 SANDBOX_ACCESS_TOKEN = os.environ.get('SANDBOX_ACCESS_TOKEN')
+LIVE_ACCESS_TOKEN=os.environ.get('LIVE_ACCESS_TOKEN')
 SANDBOX_PRODUCT_ID = os.environ.get('SANDBOX_PRODUCT_ID')
+LIVE_PRODUCT_ID=os.environ.get('LIVE_PRODUCT_ID')
 
 
 headers = {
@@ -21,7 +23,7 @@ headers = {
     'Prefer': 'return=representation',
 }
 
-def get_access_token():
+def get_access_token(client_id,client_secret):
     headers = {
         'Accept': 'application/json',
         'Accept-Language': 'en_US',
@@ -30,10 +32,9 @@ def get_access_token():
     data = {
         'grant_type': 'client_credentials'
     }
-    client_id = os.environ.get('CLIENT_ID')
-    client_secret = os.environ.get('CLIENT_SECRET')
-    url = 'https://api-m.sandbox.paypal.com/v1/oauth2/token'
-    response = requests.post(url, auth=(client_id, client_secret), headers=headers,data=data)
+    sandbox_url = 'https://api-m.sandbox.paypal.com/v1/oauth2/token'
+    live_url = 'https://api-m.paypal.com/v1/oauth2/token'
+    response = requests.post(live_url, auth=(client_id, client_secret), headers=headers,data=data)
     if response.status_code == 200:
         access_token = response.json()['access_token']
         print('Access Token:', access_token)
@@ -42,8 +43,22 @@ def get_access_token():
 
 def create_product(headers):
     data = '{ "name": "Video Streaming Service", "description": "Video streaming service", "type": "SERVICE", "category": "SOFTWARE", "image_url": "https://example.com/streaming.jpg", "home_url": "https://example.com/home" }'
-    response = requests.post('https://api-m.sandbox.paypal.com/v1/catalogs/products', headers=headers, data=data)
+    sandbox_url='https://api-m.sandbox.paypal.com/v1/catalogs/products'
+    live_url='https://api-m.paypal.com/v1/catalogs/products'
+    
+    response = requests.post(live_url, headers=headers, data=data)
 
+def list_products(headers):
+    sandbox_url='https://api-m.sandbox.paypal.com/v1/catalogs/products'
+    live_url='https://api-m.paypal.com/v1/catalogs/products'
+    params = (
+        ('page_size', '2'),
+        ('page', '1'),
+        ('total_required', 'true'),
+    )
+    response = requests.get(sandbox_url, headers=headers,params=params)
+    return response.json()
+    
 
 def create_plan(headers:dict,product_id:str,name:str,description:str,price:str,interval_unit:str,interval_count:int):
     # Template
@@ -56,12 +71,17 @@ def create_plan(headers:dict,product_id:str,name:str,description:str,price:str,i
     data = f'{{ "product_id": "{product_id}", "name": "{name}", "description": "{description}", "status": "ACTIVE", "billing_cycles": [{{ "frequency": {{ "interval_unit": "{interval_unit}", "interval_count": "{interval_count}" }}, "tenure_type": "REGULAR", "sequence": 1, "total_cycles": 0, "pricing_scheme": {{ "fixed_price": {{ "value": "{price}", "currency_code": "USD" }} }} }}], "payment_preferences": {{ "auto_bill_outstanding": true,  "setup_fee_failure_action": "CONTINUE", "payment_failure_threshold": 3 }} }}'
 
     # data_dict = json.loads(data)
-    response = requests.post('https://api-m.sandbox.paypal.com/v1/billing/plans', headers=headers, data=data)
+    live_url='https://api-m.paypal.com/v1/billing/plans'
+    sandbox_url='https://api-m.sandbox.paypal.com/v1/billing/plans'
+    
+    response = requests.post(live_url, headers=headers, data=data)
     return response
 
 
 def list_plans(headers):
-    response = requests.get('https://api-m.sandbox.paypal.com/v1/billing/plans', headers=headers)
+    sandbox_url='https://api-m.sandbox.paypal.com/v1/billing/plans'
+    live_url='https://api-m.paypal.com/v1/billing/plans'
+    response = requests.get(sandbox_url, headers=headers)
     return response.json()
 
 # create_plan(headers=headers,

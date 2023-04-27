@@ -12,7 +12,7 @@
     paypal.Buttons({
         createSubscription: function (data, actions) {
             return actions.subscription.create({
-                'plan_id': '{{plan_id}}' // Creates the subscription
+                'plan_id': '{{plan_id}}', 
             });
         },
         onApprove: function (data, actions) {
@@ -20,4 +20,5 @@
         }
 
     }).render('#paypal-button-container'); // Renders the PayPal button
+    paypal.rememberFunding([ paypal.FUNDING.PAYPAL ]);
 </script>
