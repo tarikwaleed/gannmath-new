@@ -63,10 +63,11 @@ levels = [0.25, 0.383, 0.5, 0.618, 0.75, 1]
 cs = []
 for l in levels:
     cs.append((a * 4 * l) / 180)
-results = []
-for c in cs:
-    if x / y > 1:
-        result = round(math.pow(math.sqrt(w) - c, 2) / z, 5)
-    else:
-        result = round(math.pow(math.sqrt(w) + c, 2) / z, 5)
-    results.append(result)
+print(cs)
+# results = []
+# for c in cs:
+#     if x / y > 1:
+#         result = round(math.pow(math.sqrt(w) - c, 2) / z, 5)
+#     else:
+#         result = round(math.pow(math.sqrt(w) + c, 2) / z, 5)
+#     results.append(result)
