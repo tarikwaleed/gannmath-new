@@ -51,6 +51,7 @@
 </script>
 
 <div id="paypal-button-container"></div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   paypal.Buttons({
     createSubscription: function (data, actions) {
@@ -59,7 +60,27 @@
       });
     },
     onApprove: function (data, actions) {
-      alert('You have successfully subscribed to ' + data.subscriptionID); // Optional message given to subscriber
+
+      $.ajax({
+        url: "{% url 'create-subscription' %}",
+        type: "POST",
+        data: {
+          'plan': "SEMI-ANNUAL",
+          'order_id':data.orderID,
+          'subscription_id': data.subscriptionID,
+          'payment_source': data.paymentSource,
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function (response) {
+          // Handle successful response
+          console.log(response);
+          window.location.href = "{% url 'home' %}";
+        },
+        error: function (xhr, status, error) {
+          console.log(response);
+          // Handle error
+        }
+      });
     }
 
   }).render('#paypal-button-container'); // Renders the PayPal button

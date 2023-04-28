@@ -14,7 +14,7 @@
 <body>
 {% block body %}
 
-{% if messages %}
+{% comment %} {% if messages %}
 <div>
     <strong>{% trans "Messages:" %}</strong>
     <ul>
@@ -23,11 +23,11 @@
         {% endfor %}
     </ul>
 </div>
-{% endif %}
+{% endif %} {% endcomment %}
 
 <div>
-    <strong>{% trans "Menu:" %}</strong>
-    <ul>
+    {% comment %} <strong>{% trans "Menu:" %}</strong> {% endcomment %}
+    {% comment %} <ul>
         {% if user.is_authenticated %}
         <li><a href="{% url 'account_email' %}">{% trans "Change E-mail" %}</a></li>
         <li><a href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a></li>
@@ -35,7 +35,7 @@
         <li><a href="{% url 'account_login' %}">{% trans "Sign In" %}</a></li>
         <li><a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></li>
         {% endif %}
-    </ul>
+    </ul> {% endcomment %}
 </div>
 {% block content %}
 {% endblock %}

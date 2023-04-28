@@ -1,11 +1,11 @@
 import os
 import requests
 import json
-from dotenv import load_dotenv
-os.environ['PYTHON_FUTURE_FSTRING_WIDTH'] = '200'
+from dotenv import load_dotenv,find_dotenv
 
 
 load_dotenv()
+load_dotenv(find_dotenv(), override=True)
 SANDBOX_CLIENT_ID = os.environ.get('SANDBOX_CLIENT_ID')
 SANDBOX_CLIENT_SECRET = os.environ.get('SANDBOX_CLIENT_SECRET')
 SANDBOX_ACCESS_TOKEN = os.environ.get('SANDBOX_ACCESS_TOKEN')
@@ -16,7 +16,7 @@ LIVE_PRODUCT_ID=os.environ.get('LIVE_PRODUCT_ID')
 
 headers = {
     'Authorization': f'Bearer {SANDBOX_ACCESS_TOKEN}',
-    'X-PAYPAL-SECURITY-CONTEXT': '{"consumer":{"accountNumber":1181198218909172527,"merchantId":"5KW8F2FXKX5HA"},"merchant":{"accountNumber":1659371090107732880,"merchantId":"2J6QB8YJQSJRJ"},"apiCaller":{"clientId":"AdtlNBDhgmQWi2xk6edqJVKklPFyDWxtyKuXuyVT-OgdnnKpAVsbKHgvqHHP","appId":"APP-6DV794347V142302B","payerId":"2J6QB8YJQSJRJ","accountNumber":"1659371090107732880"},"scopes":["https://api-m.paypal.com/v1/subscription/.*","https://uri.paypal.com/services/subscription","openid"]}',
+    # 'X-PAYPAL-SECURITY-CONTEXT': '{"consumer":{"accountNumber":1181198218909172527,"merchantId":"5KW8F2FXKX5HA"},"merchant":{"accountNumber":1659371090107732880,"merchantId":"2J6QB8YJQSJRJ"},"apiCaller":{"clientId":"AdtlNBDhgmQWi2xk6edqJVKklPFyDWxtyKuXuyVT-OgdnnKpAVsbKHgvqHHP","appId":"APP-6DV794347V142302B","payerId":"2J6QB8YJQSJRJ","accountNumber":"1659371090107732880"},"scopes":["https://api-m.paypal.com/v1/subscription/.*","https://uri.paypal.com/services/subscription","openid"]}',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
     # 'PayPal-Request-Id': 'PRODUCT-18062019-001',
@@ -34,19 +34,20 @@ def get_access_token(client_id,client_secret):
     }
     sandbox_url = 'https://api-m.sandbox.paypal.com/v1/oauth2/token'
     live_url = 'https://api-m.paypal.com/v1/oauth2/token'
-    response = requests.post(live_url, auth=(client_id, client_secret), headers=headers,data=data)
+    response = requests.post(sandbox_url, auth=(client_id, client_secret), headers=headers,data=data)
     if response.status_code == 200:
         access_token = response.json()['access_token']
         print('Access Token:', access_token)
     else:
         print('Error:', response.status_code, response.text)
 
-def create_product(headers):
-    data = '{ "name": "Video Streaming Service", "description": "Video streaming service", "type": "SERVICE", "category": "SOFTWARE", "image_url": "https://example.com/streaming.jpg", "home_url": "https://example.com/home" }'
+def create_product(headers:dict):
+    data = '{ "name":"Trading Service" , "description": "Trading Service", "type": "SERVICE", "category": "SOFTWARE", "image_url": "https://example.com/streaming.jpg", "home_url": "https://example.com/home" }'
     sandbox_url='https://api-m.sandbox.paypal.com/v1/catalogs/products'
     live_url='https://api-m.paypal.com/v1/catalogs/products'
     
-    response = requests.post(live_url, headers=headers, data=data)
+    response = requests.post(sandbox_url, headers=headers, data=data)
+    return response
 
 def list_products(headers):
     sandbox_url='https://api-m.sandbox.paypal.com/v1/catalogs/products'
@@ -74,7 +75,7 @@ def create_plan(headers:dict,product_id:str,name:str,description:str,price:str,i
     live_url='https://api-m.paypal.com/v1/billing/plans'
     sandbox_url='https://api-m.sandbox.paypal.com/v1/billing/plans'
     
-    response = requests.post(live_url, headers=headers, data=data)
+    response = requests.post(sandbox_url, headers=headers, data=data)
     return response
 
 
@@ -84,13 +85,11 @@ def list_plans(headers):
     response = requests.get(sandbox_url, headers=headers)
     return response.json()
 
-# create_plan(headers=headers,
-#             product_id=SANDBOX_PRODUCT_ID,
-#             name="Semi-Annual",
-#             description="Semi-Annual subscription",
-#             price="750",
-#             interval_unit="MONTH",
-#             interval_count=6)
 plans=list_plans(headers=headers)['plans']
 for plan in plans:
     print(plan['id']+' '+plan['name'])
+print(plans)
+
+# create_plan(headers,SANDBOX_PRODUCT_ID,"annual","annual","1200","YEAR",1)
+# create_plan(headers,SANDBOX_PRODUCT_ID,"semi-annual","semi-annual","750","MONTH",6)
+
