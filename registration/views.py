@@ -43,8 +43,8 @@ class OurServiceView(LoginRequiredMixin, View):
 
 class MonthlySubscriptionView(LoginRequiredMixin, View):
     def get(self, requst):
-        plan_id=os.environ.get('SANDBOX_MONTHLY_PLAN_ID')
-        client_id=os.environ.get('SANDBOX_CLIENT_ID')
+        plan_id=os.environ.get('LIVE_MONTHLY_PLAN_ID')
+        client_id=os.environ.get('LIVE_CLIENT_ID')
         context={
             'plan_id':plan_id,
             'client_id':client_id
@@ -53,8 +53,8 @@ class MonthlySubscriptionView(LoginRequiredMixin, View):
 
 class AnnualSubscriptionView(LoginRequiredMixin,View):
     def get(self, requst):
-        plan_id=os.environ.get('SANDBOX_ANNUAL_PLAN_ID')
-        client_id=os.environ.get('SANDBOX_CLIENT_ID')
+        plan_id=os.environ.get('LIVE_ANNUAL_PLAN_ID')
+        client_id=os.environ.get('LIVE_CLIENT_ID')
         context={
             'plan_id':plan_id,
             'client_id':client_id
@@ -62,8 +62,8 @@ class AnnualSubscriptionView(LoginRequiredMixin,View):
         return render(requst, "annual_subscription.html",context=context)
 class SemiAnnualSubscriptionView(LoginRequiredMixin,View):
     def get(self, requst):
-        plan_id=os.environ.get('SANDBOX_SEMI_ANNUAL_PLAN_ID')
-        client_id=os.environ.get('SANDBOX_CLIENT_ID')
+        plan_id=os.environ.get('LIVE_SEMI_ANNUAL_PLAN_ID')
+        client_id=os.environ.get('LIVE_CLIENT_ID')
         context={
             'plan_id':plan_id,
             'client_id':client_id
