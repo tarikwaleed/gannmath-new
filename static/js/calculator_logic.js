@@ -1,7 +1,7 @@
 $(document).ready(function () {
   $('#slider-value').text($('#slider-ticks option:selected').text());
-  var calculateBtn = $('#calculate-btn');
-  calculateBtn.on('click', calculate);
+  // var calculateBtn = $('#calculate-btn');
+  // calculateBtn.on('click', calculate);
   $('#slider').on('input', function () {
     var selectedOption = $('#slider-ticks option[value="' + this.value + '"]');
     $('#slider-value').text(selectedOption.text());
