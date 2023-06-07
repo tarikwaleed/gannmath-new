@@ -1,5 +1,5 @@
-import datetime
 import math
+import requests
 from allauth.account.views import SignupView as AllauthSignupView, LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse
@@ -12,6 +12,9 @@ from dotenv import load_dotenv,find_dotenv
 from django.views.decorators.csrf import csrf_exempt
 load_dotenv()
 load_dotenv(find_dotenv(), override=True)
+
+GEX_BOT_API_KEY = os.environ.get("GEX_BOT_API_KEY")
+BASE_URL = "https://api.gexbot.com/spx"
 
 
 class SignupView(AllauthSignupView):
@@ -196,3 +199,45 @@ def create_subscription(request):
         return JsonResponse({'status': 'success'})
     else:
         return JsonResponse({'status': 'error'})
+
+class GexBotAllFullView(View,LoginRequiredMixin):
+    def get(self, request):
+        url = f"{BASE_URL}/all/gex?key={GEX_BOT_API_KEY}"
+        response = requests.get(url)
+        data = response.json()
+        return JsonResponse(data)
+
+class GexBotZeroFullView(View,LoginRequiredMixin):
+    def get(self, request):
+        url = f"{BASE_URL}/zero/gex?key={GEX_BOT_API_KEY}"
+        response = requests.get(url)
+        data = response.json()
+        return JsonResponse(data)
+
+class GexBotAllMajorsView(View,LoginRequiredMixin):
+    def get(self, request):
+        url = f"{BASE_URL}/all/majors?key={GEX_BOT_API_KEY}"
+        response = requests.get(url)
+        data = response.json()
+        return JsonResponse(data)
+
+class GexBotZeroMajorsView(View,LoginRequiredMixin):
+    def get(self, request):
+        url = f"{BASE_URL}/zero/majors?key={GEX_BOT_API_KEY}"
+        response = requests.get(url)
+        data = response.json()
+        return JsonResponse(data)
+
+class GexBotAllMaxView(View,LoginRequiredMixin):
+    def get(self, request):
+        url = f"{BASE_URL}/all/maxchange?key={GEX_BOT_API_KEY}"
+        response = requests.get(url)
+        data = response.json()
+        return JsonResponse(data)
+
+class GexBotZeroMaxView(View,LoginRequiredMixin):
+    def get(self, request):
+        url = f"{BASE_URL}/zero/maxchange?key={GEX_BOT_API_KEY}"
+        response = requests.get(url)
+        data = response.json()
+        return JsonResponse(data)
