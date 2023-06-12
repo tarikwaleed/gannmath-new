@@ -46,33 +46,33 @@ class OurServiceView(LoginRequiredMixin, View):
 
 
 class MonthlySubscriptionView(LoginRequiredMixin, View):
-    def get(self, requst):
+    def get(self, request):
         plan_id=os.environ.get('LIVE_MONTHLY_PLAN_ID')
         client_id=os.environ.get('LIVE_CLIENT_ID')
         context={
             'plan_id':plan_id,
             'client_id':client_id
         }
-        return render(requst, "monthly_subscription.html",context=context)
+        return render(request, "monthly_subscription.html",context=context)
 
 class AnnualSubscriptionView(LoginRequiredMixin,View):
-    def get(self, requst):
+    def get(self, request):
         plan_id=os.environ.get('LIVE_ANNUAL_PLAN_ID')
         client_id=os.environ.get('LIVE_CLIENT_ID')
         context={
             'plan_id':plan_id,
             'client_id':client_id
         }
-        return render(requst, "annual_subscription.html",context=context)
+        return render(request, "annual_subscription.html",context=context)
 class SemiAnnualSubscriptionView(LoginRequiredMixin,View):
-    def get(self, requst):
+    def get(self, request):
         plan_id=os.environ.get('LIVE_SEMI_ANNUAL_PLAN_ID')
         client_id=os.environ.get('LIVE_CLIENT_ID')
         context={
             'plan_id':plan_id,
             'client_id':client_id
         }
-        return render(requst, "semi_annual_subscription.html",context=context)
+        return render(request, "semi_annual_subscription.html",context=context)
 
 class CalculateView(View):
     def post(self, request):
@@ -241,3 +241,11 @@ class GexBotZeroMaxView(View,LoginRequiredMixin):
         response = requests.get(url)
         data = response.json()
         return JsonResponse(data)
+
+class SpxView(View,LoginRequiredMixin):
+   def get(self,request):
+    context={
+        'api_key':GEX_BOT_API_KEY
+    }
+    return render(request, "spx.html",context)
+    

@@ -9,6 +9,7 @@ urlpatterns = [
     path("semi-annual", views.SemiAnnualSubscriptionView.as_view(), name="semi-annual-subscription"),
     path("create-subscription", views.create_subscription, name="create-subscription"),
     path('calculate/', views.CalculateView.as_view(), name='calculate'),
+    path('spx/', views.SpxView.as_view(), name='spx'),
     # path('signup/', views.SignupView.as_view(), name='account_signup'),
     # path('login/', views.LoginView.as_view(), name='account_login'),
     # path('logout/', views.LogoutView.as_view(), name='account_logout'),
