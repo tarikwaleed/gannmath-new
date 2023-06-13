@@ -30,8 +30,61 @@ fetch(url)
     const roundedMajorPosOi = Math.round(data.major_pos_oi / 5) * 5;
     const roundedMajorNegVol = Math.round(data.major_neg_vol / 5) * 5;
     const roundedMajorNegOi = Math.round(data.major_neg_oi / 5) * 5;
-
-    /** */
+    /**
+     * Rendering the date and time
+     */
+    const timestamp = data.timestamp;
+    const dateObj = new Date(timestamp);
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    let hours = dateObj.getHours();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+    const seconds = String(dateObj.getSeconds()).padStart(2, '0');
+    const formattedDate = `${month}/${day}/${year}`;
+    const formattedTime = `${hours}:${minutes}:${seconds} ${ampm}`;
+    document.getElementById('date-p').innerHTML = formattedDate;
+    document.getElementById('time-p').innerHTML = formattedTime;
+    /**
+     * Rendering Spot
+     */
+    document.getElementById('spot-p').innerHTML = spot;
+    /**
+     * Rendering Zero Gamma
+     */
+    document.getElementById('zero-gamma-p').innerHTML = zeroGamma;
+    /**
+     * Rendering Major Positive Volume
+     */
+    document.getElementById('major-positive-volume-p').innerHTML = majorPosVol;
+    /**
+     * Rendering Major Negative Volume
+     */
+    document.getElementById('major-negative-volume-p').innerHTML = majorNegVol;
+    /**
+     * Rendering Major Positive OI
+     */
+    document.getElementById('major-positive-oi-p').innerHTML = majorPosOi;
+    /**
+     * Rendering Major Negative OI
+     */
+    document.getElementById('major-negative-oi-p').innerHTML = majorNegOi;
+    /**
+     * Rendering Net Gex
+     */
+    let net_gex_vol = 0;
+    let net_gex_oi = 0;
+    for (const strike of data.strikes) {
+      net_gex_vol += strike.gex_vol;
+      net_gex_oi += strike.gex_oi;
+    }
+    document.getElementById('net-gex-volume-p').textContent = net_gex_vol.toFixed(3);
+    document.getElementById('net-gex-oi-p').textContent = net_gex_oi.toFixed(3);
+    /**
+     * Rendering
+     */
 
     var dom = document.getElementById('chart-container');
     var myChart = echarts.init(dom, null, {
@@ -117,6 +170,7 @@ fetch(url)
                   backgroundColor: 'rgba(255, 255, 0, 0.7)',
                   color: '#fff',
                   padding: [5, 10],
+                  position: 'start',
                 },
               },
               {
@@ -150,10 +204,11 @@ fetch(url)
                 symbolSize: 10,
                 label: {
                   show: true,
-                  formatter: `Major Posiive Volume \n${majorPosVol}`,
+                  formatter: `Major Posiive\n Volume \n${majorPosVol}`,
                   backgroundColor: 'rgba(0, 128, 0, 0.7)',
                   color: '#fff',
                   padding: [5, 10],
+                  position: 'middle',
                 },
               },
               {
@@ -168,10 +223,11 @@ fetch(url)
                 symbolSize: 10,
                 label: {
                   show: true,
-                  formatter: `Major Positive Oi \n${majorPosOi}`,
+                  formatter: `Major Positive\n Oi \n${majorPosOi}`,
                   backgroundColor: 'rgba(255, 0, 0, 0.7)',
                   color: '#fff',
                   padding: [5, 10],
+                  position: 'start',
                 },
               },
               {
@@ -186,7 +242,7 @@ fetch(url)
                 symbolSize: 10,
                 label: {
                   show: true,
-                  formatter: `Major Negative Vol \n${majorNegVol}`,
+                  formatter: `Major Negative\n Vol \n${majorNegVol}`,
                   backgroundColor: 'rgba(0, 0, 0, 0.7)',
                   color: '#fff',
                   padding: [5, 10],
@@ -204,10 +260,11 @@ fetch(url)
                 symbolSize: 10,
                 label: {
                   show: true,
-                  formatter: `Major Negative Oi \n${majorNegOi}`,
+                  formatter: `Major Negative\n Oi \n${majorNegOi}`,
                   backgroundColor: 'rgba(128, 0, 128, 0.7)',
                   color: '#fff',
                   padding: [5, 10],
+                  position: 'middle',
                 },
               },
             ],
