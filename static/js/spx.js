@@ -3,7 +3,27 @@
  */
 const BASE_URL = 'https://api.gexbot.com/spx';
 const url = `${BASE_URL}/all/gex?key=${apiKey}`;
+const maxChangeUrl = `${BASE_URL}/all/maxchange?key=${apiKey}`;
 const data = 0;
+
+fetch(maxChangeUrl)
+  .then((response) => response.json())
+  .then((data) => {
+    document.getElementById('max-change-1-a').textContent = data.one[0].toFixed(2);
+    document.getElementById('max-change-1-b').textContent = data.one[1].toFixed(2) + 'Bn';
+    document.getElementById('max-change-5-a').textContent = data.five[0].toFixed(2);
+    document.getElementById('max-change-5-b').textContent = data.five[1].toFixed(2) + 'Bn';
+    document.getElementById('max-change-10-a').textContent = data.ten[0].toFixed(2);
+    document.getElementById('max-change-10-b').textContent = data.ten[1].toFixed(2) + 'Bn';
+    document.getElementById('max-change-15-a').textContent = data.fifteen[0].toFixed(2);
+    document.getElementById('max-change-15-b').textContent = data.fifteen[1].toFixed(2) + 'Bn';
+    document.getElementById('max-change-30-a').textContent = data.thirty[0].toFixed(2);
+    document.getElementById('max-change-30-b').textContent = data.thirty[1].toFixed(2) + 'Bn';
+  })
+  .catch((error) => {
+    // Handle error
+    console.error('Error:', error);
+  });
 
 fetch(url)
   .then((response) => response.json())
@@ -80,11 +100,9 @@ fetch(url)
       net_gex_vol += strike.gex_vol;
       net_gex_oi += strike.gex_oi;
     }
-    document.getElementById('net-gex-volume-p').textContent = net_gex_vol.toFixed(3);
+    document.getElementById('net-gex-volume-p').textContent =
+      net_gex_vol.toFixed(3);
     document.getElementById('net-gex-oi-p').textContent = net_gex_oi.toFixed(3);
-    /**
-     * Rendering
-     */
 
     var dom = document.getElementById('chart-container');
     var myChart = echarts.init(dom, null, {
@@ -186,7 +204,7 @@ fetch(url)
                 label: {
                   show: true,
                   formatter: `Zero Gamma \n${zeroGamma}`,
-                  backgroundColor: 'rgba(255, 165, 0, 0.7)',
+                  backgroundColor: 'orange',
                   color: '#fff',
                   padding: [5, 10],
                 },
@@ -205,7 +223,7 @@ fetch(url)
                 label: {
                   show: true,
                   formatter: `Major Posiive\n Volume \n${majorPosVol}`,
-                  backgroundColor: 'rgba(0, 128, 0, 0.7)',
+                  backgroundColor: 'green',
                   color: '#fff',
                   padding: [5, 10],
                   position: 'middle',
@@ -243,7 +261,7 @@ fetch(url)
                 label: {
                   show: true,
                   formatter: `Major Negative\n Vol \n${majorNegVol}`,
-                  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                  backgroundColor: 'blue',
                   color: '#fff',
                   padding: [5, 10],
                 },

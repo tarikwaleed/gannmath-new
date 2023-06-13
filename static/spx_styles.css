@@ -11,9 +11,14 @@ color: rgb(222, 66, 91);
    
 }
 
+
 .update{
- background-color: rgb(18, 37, 53);
+ background-color: rgb(41, 41, 41);
 }
+.light-grey {
+  background-color: rgb(120, 120, 120);
+}
+
 .gree_col{
     color: lightgreen;
 }
