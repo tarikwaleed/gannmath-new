@@ -6,7 +6,6 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView
-from registration.models import Subscription
 import os
 from dotenv import load_dotenv,find_dotenv
 from django.views.decorators.csrf import csrf_exempt
@@ -232,7 +231,6 @@ def create_subscription(request):
         return JsonResponse({'status': 'success'})
     else:
         return JsonResponse({'status': 'error'})
-
 @csrf_exempt
 def standard_checkout(request):
     pass
