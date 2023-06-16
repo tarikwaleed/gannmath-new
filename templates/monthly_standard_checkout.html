@@ -1,0 +1,66 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block styles %}
+  <link rel="stylesheet" type="text/css" href="{% static 'subscriptions_styles.css' %}">
+{% endblock styles %}
+
+{% block content %}
+
+<div class="text-center "style="margin-top:150px">
+  <div class="d-flex justify-content-center mx-auto">
+    <div class="col-lg-6 col-xl-4 text-center">
+      <div class="card mb-5 mb-xl-0">
+        <div class="card-body p-5">
+          <div class="small text-uppercase fw-bold text-muted">Monthly</div>
+          <div class="mb-3">
+            <span class="display-4 fw-bold">$70</span>
+            <span class="text-muted">/ mo.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- paypal button -->
+<div id="paypal-button-container"></div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+<script src="https://www.paypal.com/sdk/js?client-id={{client_id}}&currency=USD"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    paypal.Buttons({
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: '70.00' // Replace with the desired amount
+            }
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          console.log(details);
+          alert(details)
+        });
+      },
+      onCancel: function(data) {
+        alert("Payment canceled by the user");
+      },
+      onError: function(err) {
+        alert("An error occurred during payment");
+        console.error(err);
+      }
+
+    }).render('#paypal-button-container'); // Renders the PayPal button
+</script>
+  
+
+{% endblock scripts %}

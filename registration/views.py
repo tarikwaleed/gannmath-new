@@ -61,6 +61,19 @@ class MonthlySubscriptionView(LoginRequiredMixin, View):
         }
         return render(request, "monthly_subscription.html", context=context)
 
+class MonthlyStandardCheckoutView(LoginRequiredMixin, View):
+    def get(self, request):
+        environment = os.environ.get('ENVIRONMENT')
+        if environment == 'live':
+            client_id = os.environ.get('LIVE_CLIENT_ID')
+        else:
+            client_id = os.environ.get('SANDBOX_CLIENT_ID')
+        
+        context = {
+            'client_id': client_id
+        }
+        return render(request, "monthly_standard_checkout.html", context=context)
+
 class AnnualSubscriptionView(LoginRequiredMixin, View):
     def get(self, request):
         environment = os.environ.get('ENVIRONMENT')
@@ -219,6 +232,10 @@ def create_subscription(request):
         return JsonResponse({'status': 'success'})
     else:
         return JsonResponse({'status': 'error'})
+
+@csrf_exempt
+def standard_checkout(request):
+    pass
 
 class GexBotAllFullView(LoginRequiredMixin,View):
     def get(self, request):
