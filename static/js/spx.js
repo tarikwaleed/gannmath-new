@@ -196,7 +196,7 @@ fetch(url)
                 xAxis: 0,
                 yAxis: roundedZeroGamma.toString(),
                 lineStyle: {
-                  color: 'orange',
+                  color: ' rgb(252, 177, 3)',
                   type: 'dashed',
                 },
                 symbol: 'circle',
@@ -204,7 +204,7 @@ fetch(url)
                 label: {
                   show: true,
                   formatter: `Zero Gamma \n${zeroGamma}`,
-                  backgroundColor: 'orange',
+                  backgroundColor: 'rgb(252, 177, 3)',
                   color: '#fff',
                   padding: [5, 10],
                 },
@@ -215,7 +215,7 @@ fetch(url)
                 xAxis: 0,
                 yAxis: roundedMajorPosVol.toString(),
                 lineStyle: {
-                  color: 'green',
+                  color: 'rgb(3, 255, 53)',
                   type: 'dashed',
                 },
                 symbol: 'circle',
@@ -223,7 +223,7 @@ fetch(url)
                 label: {
                   show: true,
                   formatter: `Major Posiive\n Volume \n${majorPosVol}`,
-                  backgroundColor: 'green',
+                  backgroundColor: ' rgb(3, 255, 53)',
                   color: '#fff',
                   padding: [5, 10],
                   position: 'middle',
@@ -234,7 +234,7 @@ fetch(url)
                 xAxis: 0,
                 yAxis: roundedMajorPosOi.toString(),
                 lineStyle: {
-                  color: 'red',
+                  color: 'rgb(232, 121, 249)',
                   type: 'dashed',
                 },
                 symbol: 'circle',
@@ -242,7 +242,7 @@ fetch(url)
                 label: {
                   show: true,
                   formatter: `Major Positive\n Oi \n${majorPosOi}`,
-                  backgroundColor: 'rgba(255, 0, 0, 0.7)',
+                  backgroundColor: 'rgb(232, 121, 249)',
                   color: '#fff',
                   padding: [5, 10],
                   position: 'start',
@@ -253,7 +253,7 @@ fetch(url)
                 xAxis: 0,
                 yAxis: roundedMajorNegVol.toString(),
                 lineStyle: {
-                  color: 'blue',
+                  color: 'rgb(61, 138, 68)',
                   type: 'dashed',
                 },
                 symbol: 'circle',
@@ -261,7 +261,7 @@ fetch(url)
                 label: {
                   show: true,
                   formatter: `Major Negative\n Vol \n${majorNegVol}`,
-                  backgroundColor: 'blue',
+                  backgroundColor: 'rgb(61, 138, 68)',
                   color: '#fff',
                   padding: [5, 10],
                 },
@@ -271,7 +271,7 @@ fetch(url)
                 xAxis: 0,
                 yAxis: roundedMajorNegOi.toString(),
                 lineStyle: {
-                  color: 'purple',
+                  color: 'rgb(162, 28, 175)',
                   type: 'dashed',
                 },
                 symbol: 'circle',
@@ -279,7 +279,7 @@ fetch(url)
                 label: {
                   show: true,
                   formatter: `Major Negative\n Oi \n${majorNegOi}`,
-                  backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                  backgroundColor: 'rgb(162, 28, 175)',
                   color: '#fff',
                   padding: [5, 10],
                   position: 'middle',
@@ -349,7 +349,6 @@ fetch(url)
     window.addEventListener('resize', myChart.resize);
   })
   .catch((error) => {
-    // Handle any errors
     console.error(error);
   });
 

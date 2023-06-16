@@ -200,52 +200,52 @@ def create_subscription(request):
     else:
         return JsonResponse({'status': 'error'})
 
-class GexBotAllFullView(View,LoginRequiredMixin):
+class GexBotAllFullView(LoginRequiredMixin,View):
     def get(self, request):
         url = f"{BASE_URL}/all/gex?key={GEX_BOT_API_KEY}"
         response = requests.get(url)
         data = response.json()
         return JsonResponse(data)
 
-class GexBotZeroFullView(View,LoginRequiredMixin):
+class GexBotZeroFullView(LoginRequiredMixin,View):
     def get(self, request):
         url = f"{BASE_URL}/zero/gex?key={GEX_BOT_API_KEY}"
         response = requests.get(url)
         data = response.json()
         return JsonResponse(data)
 
-class GexBotAllMajorsView(View,LoginRequiredMixin):
+class GexBotAllMajorsView(LoginRequiredMixin,View):
     def get(self, request):
         url = f"{BASE_URL}/all/majors?key={GEX_BOT_API_KEY}"
         response = requests.get(url)
         data = response.json()
         return JsonResponse(data)
 
-class GexBotZeroMajorsView(View,LoginRequiredMixin):
+class GexBotZeroMajorsView(LoginRequiredMixin,View):
     def get(self, request):
         url = f"{BASE_URL}/zero/majors?key={GEX_BOT_API_KEY}"
         response = requests.get(url)
         data = response.json()
         return JsonResponse(data)
 
-class GexBotAllMaxView(View,LoginRequiredMixin):
+class GexBotAllMaxView(LoginRequiredMixin,View):
     def get(self, request):
         url = f"{BASE_URL}/all/maxchange?key={GEX_BOT_API_KEY}"
         response = requests.get(url)
         data = response.json()
         return JsonResponse(data)
 
-class GexBotZeroMaxView(View,LoginRequiredMixin):
+class GexBotZeroMaxView(LoginRequiredMixin,View):
     def get(self, request):
         url = f"{BASE_URL}/zero/maxchange?key={GEX_BOT_API_KEY}"
         response = requests.get(url)
         data = response.json()
         return JsonResponse(data)
 
-class SpxView(View,LoginRequiredMixin):
+class SpxView(LoginRequiredMixin,View):
    def get(self,request):
-    context={
-        'api_key':GEX_BOT_API_KEY
-    }
-    return render(request, "spx.html",context)
+        context={
+            'api_key':GEX_BOT_API_KEY
+        }
+        return render(request, "spx.html",context)
     
