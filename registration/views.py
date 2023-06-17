@@ -272,6 +272,7 @@ def save_subscription(request):
     if request.method == 'POST':
         payload = json.loads(request.body)
         user=request.user
+        Subscription.objects.filter(user=user).delete()
         subscription = Subscription(
             user=user,
             payment_id=payload['payment_id'],
