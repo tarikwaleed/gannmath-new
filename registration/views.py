@@ -9,6 +9,9 @@ from django.views.generic import TemplateView
 import os
 from dotenv import load_dotenv,find_dotenv
 from django.views.decorators.csrf import csrf_exempt
+import json
+
+from registration.models import Subscription
 load_dotenv()
 load_dotenv(find_dotenv(), override=True)
 
@@ -35,14 +38,13 @@ class HomePageView(TemplateView):
 class OurServiceView(LoginRequiredMixin, View):
     def get(self, request):
         try:
-            subscription = request.user.subscription
-            if subscription.is_active:
+            subscription = Subscription.objects.get(user=request.user)
+            if subscription.status == 'COMPLETED':
                 return render(request, "our_service.html")
             else:
                 return render(request, "home.html", {"message": "Please subscribe to access our service."})
         except Subscription.DoesNotExist:
             return render(request, "home.html", {"message": "Please subscribe to access our service."})
-
 
 class MonthlySubscriptionView(LoginRequiredMixin, View):
     def get(self, request):
@@ -231,9 +233,6 @@ def create_subscription(request):
         return JsonResponse({'status': 'success'})
     else:
         return JsonResponse({'status': 'error'})
-@csrf_exempt
-def standard_checkout(request):
-    pass
 
 class GexBotAllFullView(LoginRequiredMixin,View):
     def get(self, request):
@@ -241,6 +240,51 @@ class GexBotAllFullView(LoginRequiredMixin,View):
         response = requests.get(url)
         data = response.json()
         return JsonResponse(data)
+
+
+@csrf_exempt
+def save_subscription(request):
+    if request.method == 'POST':
+        payload = json.loads(request.body)
+        user=request.user
+        subscription = Subscription(
+            user=user,
+            payment_id=payload['payment_id'],
+            intent=payload['intent'],
+            status=payload['status'],
+            reference_id=payload['reference_id'],
+            currency_code=payload['currency_code'],
+            amount_value=payload['amount_value'],
+            payee_email_address=payload['payee_email_address'],
+            payee_merchant_id=payload['payee_merchant_id'],
+            full_name=payload['full_name'],
+            address_line_1=payload['address_line_1'],
+            admin_area_2=payload['admin_area_2'],
+            postal_code=payload['postal_code'],
+            country_code=payload['country_code'],
+            capture_id=payload['capture_id'],
+            capture_status=payload['capture_status'],
+            capture_amount_currency_code=payload['capture_amount_currency_code'],
+            capture_amount_value=payload['capture_amount_value'],
+            final_capture=payload['final_capture'],
+            seller_protection_status=payload['seller_protection_status'],
+            dispute_categories=json.loads(payload['dispute_categories']),
+            create_time=payload['create_time'],
+            update_time=payload['update_time'],
+            payer_given_name=payload['payer_given_name'],
+            payer_surname=payload['payer_surname'],
+            payer_email_address=payload['payer_email_address'],
+            payer_id=payload['payer_id'],
+            payer_country_code=payload['payer_country_code'],
+            links_href=payload['links_href'],
+            links_rel=payload['links_rel'],
+            links_method=payload['links_method']
+        )
+        subscription.save()
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
 
 class GexBotZeroFullView(LoginRequiredMixin,View):
     def get(self, request):
@@ -277,10 +321,16 @@ class GexBotZeroMaxView(LoginRequiredMixin,View):
         data = response.json()
         return JsonResponse(data)
 
-class SpxView(LoginRequiredMixin,View):
-   def get(self,request):
-        context={
-            'api_key':GEX_BOT_API_KEY
-        }
-        return render(request, "spx.html",context)
-    
+class SpxView(LoginRequiredMixin, View):
+    def get(self, request):
+        try:
+            subscription = Subscription.objects.get(user=request.user)
+            if subscription.status == 'COMPLETED':
+                context = {
+                    'api_key': GEX_BOT_API_KEY
+                }
+                return render(request, "spx.html", context)
+            else:
+                return render(request, "home.html", {"message": "Please subscribe to access SPX."})
+        except Subscription.DoesNotExist:
+            return render(request, "home.html", {"message": "Please subscribe to access SPX."}) 
