@@ -1,0 +1,119 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block styles %}
+  <link rel="stylesheet" type="text/css" href="{% static 'subscriptions_styles.css' %}">
+{% endblock styles %}
+
+{% block content %}
+
+<div class="text-center "style="margin-top:150px">
+  <div class="d-flex justify-content-center mx-auto">
+    <div class="col-lg-6 col-xl-4 text-center">
+      <div class="card mb-5 mb-xl-0">
+        <div class="card-body p-5">
+          <div class="small text-uppercase fw-bold text-muted">Semi Annual</div>
+          <div class="mb-3">
+            <span class="display-4 fw-bold">$360</span>
+            <span class="text-muted">/ mo.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- paypal button -->
+<div id="paypal-button-container"></div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+<script src="https://www.paypal.com/sdk/js?client-id={{client_id}}&currency=USD"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  paypal.Buttons({
+    createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: '360.00' // Replace with the desired amount
+            }
+          }]
+        });
+      },
+    onApprove: function (data, actions) {
+      return actions.order.capture().then(function (details) {
+        /**
+
+        */
+        var payload = {
+          payment_id: details.id,
+          intent: 'CAPTURE',
+          status: details.status,
+          reference_id: details.purchase_units[0].reference_id,
+          currency_code: details.purchase_units[0].amount.currency_code,
+          amount_value: details.purchase_units[0].amount.value,
+          payee_email_address: details.purchase_units[0].payee.email_address,
+          payee_merchant_id: details.purchase_units[0].payee.merchant_id,
+          full_name: details.purchase_units[0].shipping.name.full_name,
+          address_line_1: details.purchase_units[0].shipping.address.address_line_1,
+          admin_area_2: details.purchase_units[0].shipping.address.admin_area_2,
+          postal_code: details.purchase_units[0].shipping.address.postal_code,
+          country_code: details.purchase_units[0].shipping.address.country_code,
+          capture_id: details.purchase_units[0].payments.captures[0].id,
+          capture_status: details.purchase_units[0].payments.captures[0].status,
+          capture_amount_currency_code: details.purchase_units[0].payments.captures[0].amount.currency_code,
+          capture_amount_value: details.purchase_units[0].payments.captures[0].amount.value,
+          final_capture: details.purchase_units[0].payments.captures[0].final_capture,
+          seller_protection_status: details.purchase_units[0].payments.captures[0].seller_protection.status,
+          dispute_categories: JSON.stringify(details.purchase_units[0].payments.captures[0].seller_protection.dispute_categories),
+          create_time: details.create_time,
+          update_time: details.update_time,
+          payer_given_name: details.payer.name.given_name,
+          payer_surname: details.payer.name.surname,
+          payer_email_address: details.payer.email_address,
+          payer_id: details.payer.payer_id,
+          payer_country_code: details.payer.address.country_code,
+          links_href: details.links[0].href,
+          links_rel: details.links[0].rel,
+          links_method: details.links[0].method
+        };
+        
+        $.ajax({
+          url: "{% url 'save-subscription' %}",
+          type: "POST",
+          data: JSON.stringify(payload),
+          contentType: "application/json",
+          success: function (response) {
+            // Handle successful response
+            console.log(response);
+            window.location.href = "{% url 'home' %}";
+          },
+          error: function (xhr, status, error) {
+            console.log(error);
+            // Handle error
+          }
+        });
+        
+
+      
+
+
+      });
+    },
+    onCancel: function (data) {
+      alert("Payment canceled by the user");
+    },
+    onError: function (err) {
+      alert("An error occurred during payment");
+      console.error(err);
+    }
+  }).render('#paypal-button-container'); // Renders the PayPal button
+</script>
+ 
+
+{% endblock scripts %}

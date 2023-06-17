@@ -12,6 +12,8 @@ urlpatterns = [
     path('calculate/', views.CalculateView.as_view(), name='calculate'),
     #################### Paypal Standard Checkout ###############################
     path("monthly-standard-checkout", views.MonthlyStandardCheckoutView.as_view(), name="monthly-standard-checkout"),
+    path("semi-annual-standard-checkout", views.SemiAnnualStandardCheckoutView.as_view(), name="semi-annual-standard-checkout"),
+    path("annual-standard-checkout", views.AnnualStandardCheckoutView.as_view(), name="annual-standard-checkout"),
     path("save-subscription", views.save_subscription, name="save-subscription"),
     path('spx/', views.SpxView.as_view(), name='spx'),
     # path('signup/', views.SignupView.as_view(), name='account_signup'),
