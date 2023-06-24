@@ -1,142 +1,172 @@
 {% extends 'base.html' %}
 {% block content %}
-<form method="POST" action="{% url 'calculate' %}">
-{% csrf_token %}
-<div class="d-flex flex-column mb-3 align-items-center " style="margin-top:100px">
-    {% comment %} X input {% endcomment %}
-    <div class="col-md-4 mb-3">
-        <div class="d-flex align-items-center">
-            <label for="x-input" class="mx-2 fs-4">X:</label>
-            <input type="text" class="form-control" id="x-input" name="x"  required value="6.2">
+    <form method="POST" action="{% url 'calculate' %}">
+        {% csrf_token %}
+        <div class="d-flex flex-column mb-3 align-items-center "
+             style="margin-top:100px">
+            {% comment %} X input {% endcomment %}
+            <div class="col-md-4 mb-3">
+                <div class="d-flex align-items-center">
+                    <label for="x-input" class="mx-2 fs-4">X:</label>
+                    <input type="text"
+                           class="form-control"
+                           id="x-input"
+                           name="x"
+                           required
+                           value="6.2">
+                </div>
+            </div>
+            {% comment %} Y input {% endcomment %}
+            <div class="col-md-4 mb-3">
+                <div class="d-flex align-items-center">
+                    <label for="y-input" class="mx-2 fs-4">Y:</label>
+                    <input type="text"
+                           class="form-control"
+                           id="y-input"
+                           name="y"
+                           required
+                           value="6.37">
+                </div>
+            </div>
         </div>
-    </div>
-    {% comment %} Y input {% endcomment %}
-    <div class="col-md-4 mb-3">
-        <div class="d-flex align-items-center">
-            <label for="y-input" class="mx-2 fs-4">Y:</label>
-            <input type="text" class="form-control" id="y-input" name="y"  required value="6.37">
+        {% comment %} Z input (Slider) {% endcomment %}
+        <div class="d-flex justify-content-center my-3 mx-auto">
+            <input type="range"
+                   id="slider"
+                   name="slider"
+                   min="0"
+                   max="6"
+                   step="1"
+                   list="slider-ticks"
+                   style="width: 1100px;
+                          background-color:#002D62">
+            <datalist id="slider-ticks">
+                <option value="0">0.001</option>
+                <option value="1">0.01</option>
+                <option value="2" selected>0.1</option>
+                <option value="3">1</option>
+                <option value="4">10</option>
+                <option value="5">100</option>
+                <option value="6">1000</option>
+            </datalist>
+            <span id="slider-value"></span>
         </div>
-    </div>
-</div>
-
-
-{% comment %} Z input (Slider) {% endcomment %}
-<div class="d-flex justify-content-center my-3 mx-auto">
-    <input type="range" id="slider" name="slider" min="0" max="6" step="1" list="slider-ticks"
-           style="width: 1100px;background-color:#002D62;">
-    <datalist id="slider-ticks">
-        <option value="0" >0.001</option>
-        <option value="1" >0.01</option>
-        <option value="2" selected >0.1</option>
-        <option value="3" >1</option>
-        <option value="4" >10</option>
-        <option value="5" >100</option>
-        <option value="6" >1000</option>
-    </datalist>
-    <span id="slider-value"></span>
-</div>
-
-{% comment %} Z Labels {% endcomment %}
-<div class="text-center d-flex justify-content-between fs-1">
-    <span style="margin-left:35 ;"></span>
-    <span >-D</span>
-    <span >-C</span>
-    <span >-B</span>
-    <span >A</span>
-    <span >B</span>
-    <span >C</span>
-    <span >D</span>
-    <span style=" margin-right:40 ;"></span>
-</div>
-
-{% comment %} Calculate Button {% endcomment %}
-<div class="d-flex justify-content-center">
-    <button type="submit" class="btn btn-secondary"
-            style="background-color: #9fd3c7; font-weight: bold; font-size: 25px;border:none">Calculate</button>
-</div>
-
-{% comment %} Tables {% endcomment %}
-<div class="row">
-    <div class="d-flex justify-content-around range-contaner">
-        {% comment %} Levels Table {% endcomment %}
-        <table id="levels-table" class='table table-hover m-2'>
-            <thead>
-            <tr class='table-secondary'>
-                <th>Levels</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>25%</td>
-            </tr>
-            <tr class='table-info'>
-                <td>38.2%</td>
-            </tr>
-            <tr>
-                <td>50%</td>
-            </tr>
-            <tr class='table-info'>
-                <td>61.8%</td>
-            </tr>
-            <tr>
-                <td>75%</td>
-            </tr>
-            <tr class='table-info'>
-                <td>100%</td>
-            </tr>
-        </table>
-        {% comment %} Angles Table {% endcomment %}
-        <table id="angles-table" class="table table-hover m-2">
-        <thead>
-            <tr class="table-secondary">
-            <th>Angles</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for angle in angles %}
-            <tr id="angle-{{ forloop.counter0 }}" {% cycle 'class="table-info"' '' %}>
-            <td>{{ angle }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-        </table>
-        {% comment %} Prices Table {% endcomment %}
-        <table id="prices-table" class="table table-hover m-2">
-        <thead>
-            <tr class="table-secondary">
-            <th>Price Values</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for result in results %}
-            <tr {% cycle 'class="table-info"' '' %}>
-            <td id="result-{{ forloop.counter0 }}">{{ result|floatformat:5 }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-        </table>
-
-
-    </div>
-</div>
-{% comment %} Video Section {% endcomment %}
-<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen
-        style="height:700px;">
-</iframe>
-{% comment %} Dummy Content Section {% endcomment %}
-<div class="row text-center flex-row d-flex justify-content-center  pt-3 pb-3 "
-     style="background-color:#002D62;margin-top: 7px;">
-    <h2 style="color: white;"> HOSTOS <span class="bg">Plans</span>& <span class="bg">pricing</h2>
-    <p style="font-style: italic; font-size: large; color: white;">Lorem, ipsum dolor sit amet consectetur
-        adipisicing elit. quae reprehenderit</p>
-    <p style="font-style: italic; font-size: large; color: white;">Lorem, ipsum dolor sit amet consectetur
-        adipisicing elit. quae reprehenderit</p>
-    <p style="font-style: italic; font-size: large; color: white;">Lorem, ipsum dolor sit amet consectetur
-        adipisicing elit. quae reprehenderit</p>
-    <p style="font-style: italic; font-size: large; color: white;">Lorem, ipsum dolor sit amet consectetur
-        adipisicing elit. quae reprehenderit</p>
-    <p style="font-style: italic; font-size: large; color: white;">Lorem, ipsum dolor sit amet consectetur
-        adipisicing elit. quae reprehenderit</p>
-</div>
-</form>
-{% endblock %}
+        {% comment %} Z Labels {% endcomment %}
+        <div class="text-center d-flex justify-content-between fs-1">
+            <span style="margin-left:35 ;"></span>
+            <span>-D</span>
+            <span>-C</span>
+            <span>-B</span>
+            <span>A</span>
+            <span>B</span>
+            <span>C</span>
+            <span>D</span>
+            <span style=" margin-right:40 ;"></span>
+        </div>
+        {% comment %} Calculate Button {% endcomment %}
+        <div class="d-flex justify-content-center">
+            <button type="submit"
+                    class="btn btn-secondary"
+                    style="background-color: #9fd3c7;
+                           font-weight: bold;
+                           font-size: 25px;
+                           border:none">Calculate</button>
+        </div>
+        {% comment %} Tables {% endcomment %}
+        <div class="row">
+            <div class="d-flex justify-content-around range-contaner">
+                {% comment %} Levels Table {% endcomment %}
+                <table id="levels-table" class='table table-hover m-2'>
+                    <thead>
+                        <tr class='table-secondary'>
+                            <th>Levels</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>25%</td>
+                        </tr>
+                        <tr class='table-info'>
+                            <td>38.2%</td>
+                        </tr>
+                        <tr>
+                            <td>50%</td>
+                        </tr>
+                        <tr class='table-info'>
+                            <td>61.8%</td>
+                        </tr>
+                        <tr>
+                            <td>75%</td>
+                        </tr>
+                        <tr class='table-info'>
+                            <td>100%</td>
+                        </tr>
+                    </table>
+                    {% comment %} Angles Table {% endcomment %}
+                    <table id="angles-table" class="table table-hover m-2">
+                        <thead>
+                            <tr class="table-secondary">
+                                <th>Angles</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for angle in angles %}
+                                <tr id="angle-{{ forloop.counter0 }}" {% cycle 'class="table-info"' '' %}>
+                                    <td>{{ angle }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% comment %} Prices Table {% endcomment %}
+                    <table id="prices-table" class="table table-hover m-2">
+                        <thead>
+                            <tr class="table-secondary">
+                                <th>Price Values</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for result in results %}
+                                <tr {% cycle 'class="table-info"' '' %}>
+                                    <td id="result-{{ forloop.counter0 }}">{{ result|floatformat:5 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% comment %} Video Section {% endcomment %}
+            <iframe class="embed-responsive-item"
+                    src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"
+                    allowfullscreen
+                    style="height:700px">
+            </iframe>
+            {% comment %} Dummy Content Section {% endcomment %}
+            <div class="row text-center flex-row d-flex justify-content-center  pt-3 pb-3 "
+                 style="background-color:#002D62;
+                        margin-top: 7px">
+                <h2 style="color: white;">
+                    HOSTOS <span class="bg">Plans</span>& <span class="bg">pricing
+                </h2>
+                <p style="font-style: italic; font-size: large; color: white;">
+                    Lorem, ipsum dolor sit amet consectetur
+                    adipisicing elit. quae reprehenderit
+                </p>
+                <p style="font-style: italic; font-size: large; color: white;">
+                    Lorem, ipsum dolor sit amet consectetur
+                    adipisicing elit. quae reprehenderit
+                </p>
+                <p style="font-style: italic; font-size: large; color: white;">
+                    Lorem, ipsum dolor sit amet consectetur
+                    adipisicing elit. quae reprehenderit
+                </p>
+                <p style="font-style: italic; font-size: large; color: white;">
+                    Lorem, ipsum dolor sit amet consectetur
+                    adipisicing elit. quae reprehenderit
+                </p>
+                <p style="font-style: italic; font-size: large; color: white;">
+                    Lorem, ipsum dolor sit amet consectetur
+                    adipisicing elit. quae reprehenderit
+                </p>
+            </div>
+        </form>
+    {% endblock %}

@@ -1,11 +1,10 @@
 {% extends "account/base.html" %}
-
 {% load i18n %}
-
-{% block head_title %}{% trans "Sign Out" %}{% endblock %}
-
+{% block head_title %}
+    {% trans "Sign Out" %}
+{% endblock %}
 {% block content %}
-<style>
+    <style>
   /* Center align the headings and paragraphs */
   h1, p {
     text-align: center;
@@ -34,18 +33,17 @@
   button[type=submit]:hover {
     background-color: #0062cc;
   }
-</style>
-
-<h1 style="color: #007bff; font-size: 28px;">{% trans "Sign Out" %}</h1>
-<h1 style="font-size: 24px;">{{request.user}}</h1>
-
-<p style="font-size: 18px;">{% trans 'Are you sure you want to sign out?' %}</p>
-
-<form method="post" action="{% url 'account_logout' %}" class="text-center">
-  {% csrf_token %}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-  {% endif %}
-<button type="submit" class="mx-auto d-block">{% trans 'Sign Out' %}</button>
-</form>
+    </style>
+    <h1 style="color: #007bff; font-size: 28px;">{% trans "Sign Out" %}</h1>
+    <h1 style="font-size: 24px;">{{ request.user }}</h1>
+    <p style="font-size: 18px;">{% trans 'Are you sure you want to sign out?' %}</p>
+    <form method="post" action="{% url 'account_logout' %}" class="text-center">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+            <input type="hidden"
+                   name="{{ redirect_field_name }}"
+                   value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button type="submit" class="mx-auto d-block">{% trans 'Sign Out' %}</button>
+    </form>
 {% endblock %}

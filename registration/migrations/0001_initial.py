@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,14 +14,28 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Subscription',
+            name="Subscription",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('plan', models.CharField(max_length=100)),
-                ('start_date', models.DateTimeField(auto_now_add=True)),
-                ('end_date', models.DateTimeField()),
-                ('is_active', models.BooleanField(default=True)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("plan", models.CharField(max_length=100)),
+                ("start_date", models.DateTimeField(auto_now_add=True)),
+                ("end_date", models.DateTimeField()),
+                ("is_active", models.BooleanField(default=True)),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

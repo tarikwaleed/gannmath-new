@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+
 class Subscription(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     payment_id = models.CharField(max_length=255)
@@ -33,5 +34,3 @@ class Subscription(models.Model):
     links_href = models.URLField()
     links_rel = models.CharField(max_length=255)
     links_method = models.CharField(max_length=10)
-
-
