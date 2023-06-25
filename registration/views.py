@@ -268,11 +268,12 @@ def save_subscription(request):
     if request.method == "POST":
         payload = json.loads(request.body)
         user = request.user
+        # Delete the previous subscription of the user
         Subscription.objects.filter(user=user).delete()
         subscription = Subscription(
             user=user,
             payment_id=payload["payment_id"],
-            intent=payload["intent"],
+            # intent=payload["intent"],
             status=payload["status"],
             reference_id=payload["reference_id"],
             currency_code=payload["currency_code"],
