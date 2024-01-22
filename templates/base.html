@@ -3,8 +3,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>EasyTrade</title>
@@ -15,16 +14,36 @@
               href="{% static 'our_services_styles.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'spx_styles.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
-        <link rel="stylesheet"
-              type="text/css"
-              href="{% static 'css/bootstrap.min.css' %}">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/v4-shims.min.js">
-        {% block styles %}{% endblock %}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <script src="https://kit.fontawesome.com/42d568ae55.js" crossorigin="anonymous"></script>
+        {% block styles %}
+        <style>
+            #ab {
+                margin-left: -100px;
+            }
+            
+            #abb {
+                margin-left: -100px;
+            }
+            
+            @media only screen and (max-width: 600px) {
+                #ab{
+                    margin-left: -35px;
+                    font-size: 16px;
+                }
+                
+                #abb {
+                    margin-left: -35px;
+                }
+            }
+        </style>
+        {% endblock %}
     </head>
     <body>
         <!-- Include the navigation code here -->
-        <nav class="navbar navbar-expand-lg navbar-dark backgroundColor ">
-            <div class="container px-5">
+        <nav class="navbar navbar-expand-lg p-3 navbar-dark backgroundColor">
+            <!--<div class="container px-5">-->
+                <a class="navbar-brand" href="#">GannMath</a>
                 <!-- <a class="navbar-brand" href="#!">Start Bootstrap</a> -->
                 <button class="navbar-toggler"
                         type="button"
@@ -39,36 +58,39 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-baseline">
                         {% if user.is_authenticated %}
                             <li class=" nav-item" style="color: gray;font-weight: bold;">
-                                <a class="nav-link" href="{% url 'home' %}">Home</a>
+                                <a class="nav-link" href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a>
                             </li>
                             <li class="nav-item" style="color: gray;font-weight: bold;">
-                                <a class="nav-link" href="{% url 'account_logout' %}">Sign
+                                <a class="nav-link" href="{% url 'account_logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Sign
                                 Out</a>
                             </li>
                         {% else %}
                             <li class="nav-item" style="color: gray;font-weight: bold;">
-                                <a class="nav-link" href="{% url 'account_login' %}">Login</a>
+                                <a class="nav-link" href="{% url 'account_login' %}"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
                             </li>
                             <li class="nav-item" style="color: gray;font-weight: bold;">
-                                <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
+                                <a class="nav-link" href="{% url 'account_signup' %}"><i class="fa-solid fa-user-plus"></i> Sign Up</a>
                             </li>
                         {% endif %}
                         <li class="nav-item" style="color: gray;font-weight: bold;">
-                            <a class="nav-link" href="{% url 'our_service' %}">Our Services</a>
+                            <a class="nav-link" href="{% url 'our_service' %}"><i class="fa-solid fa-calculator"></i> Gann calculator</a>
                         </li>
                         <li class="nav-item" style="color: gray;font-weight: bold;">
-                            <a class="nav-link" href="{% url 'spx' %}">SPX</a>
+                            <a class="nav-link" href="{% url 'spx' %}"><i class="fa-solid fa-chart-simple"></i> SPX</a>
                         </li>
                     </ul>
                 </div>
-            </div>
+            <!--</div>-->
         </nav>
         <div class="content">
             {% block content %}{% endblock %}
         </div>
-        {% comment %} <script src="{% static 'js/sb-forms-latest.js' %}"></script> {% endcomment %}
+        {% comment %} <script src="{% static 'js/sb-forms-latest.js' %}"></script>
         <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> {% endcomment %}
+        
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
         {% block scripts %}{% endblock %}
     </body>
 </html>

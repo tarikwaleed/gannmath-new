@@ -22,9 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-i0ma4zt@ik4osqel$paa&5!s187!p1n!18n!2*t-hu%@99#l%e"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['gannmath.com','www.gannmath.com','89.116.52.40']
+
+CSRF_TRUSTED_ORIGINS = ['https://gannmath.com','https://www.gannmath.com']
+
 
 # Application definition
 
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "telegram.apps.TelegramConfig",
 ]
 
 MIDDLEWARE = [
@@ -113,9 +117,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
-# STATIC_ROOT = 'static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS=[
+        BASE_DIR/"mostaql1_v2/static",
+        os.path.join(BASE_DIR, 'mostaql1_v2', 'pyarmor_output')
+    ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

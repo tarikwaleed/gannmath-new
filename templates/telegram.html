@@ -1,0 +1,55 @@
+{% extends 'base.html' %} {% load static %} {% block styles %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'subscriptions_styles.css' %}"
+/>
+{% endblock styles %} {% block content %}
+<!-- Pricing card telegram-->
+<div class="m-auto w-75 text-center">
+             <h2 class="mt-5 small text-uppercase fw-bold text-muted">Monthly</h2>
+                 <span class="display-4 fw-bold">$200</span>
+                 <span class="text-muted">/ mo.</span>
+             <p class="fs-2">Subscribe to the Telegram group for signals for a month</p>
+ </div>
+<!-- paypal button -->
+<div id="paypal-button-container"></div>
+{% endblock content %} {% block scripts %}
+<script src="https://www.paypal.com/sdk/js?client-id={{client_id}}&currency=USD"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  paypal.Buttons({
+    createSubscription: function (data, actions) {
+      return actions.subActive.create({
+        'plan_id': '{{plan_id}}' // Creates the subscription
+      });
+    },
+    onApprove: function (data, actions) {
+      $.ajax({
+        url: "{% url 'create-subActive' %}",
+        type: "POST",
+        data: {
+          'is_planType': "Month",
+          'payID': data.orderID,
+          'subactive_id': data.subActiveID,
+          'total': "200.00",
+          'payment_source': data.paymentSource,
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function (response) {
+          // Handle successful response
+          console.log(response);
+          window.location.href = "{% url 'telegram_checkout' %}";
+        },
+        error: function (xhr, status, error) {
+          console.log(response);
+          // Handle error
+        }
+      });
+
+
+    }
+
+  }).render('#paypal-button-container'); // Renders the PayPal button
+    </script>
+{% endblock scripts %}

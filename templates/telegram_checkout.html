@@ -1,0 +1,72 @@
+{% extends 'base.html' %} {% load static %} {% block styles %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'subscriptions_styles.css' %}"
+/>
+{% endblock styles %} {% block content %}
+<!-- Pricing card telegram-->
+<div class="m-auto w-75 text-center">
+             <h2 class="mt-5 small text-uppercase fw-bold text-muted">Monthly</h2>
+                 <span class="display-4 fw-bold">$200</span>
+                 <span class="text-muted">/ mo.</span>
+             <p class="fs-2">Subscribe to the Telegram group for signals for a month</p>
+ </div>
+<!-- paypal button -->
+<div id="paypal-button-container"></div>
+
+{% block scripts %}
+<script src="https://www.paypal.com/sdk/js?client-id={{client_id}}&currency=USD"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+paypal
+    .Buttons({
+      createOrder: function (data, actions) {
+        return actions.order.create({
+          purchase_units: [
+            {
+              amount: {
+                value: '0.01',
+              },
+            },
+          ],
+        });
+      },
+      onApprove: function (data, actions) {
+        return actions.order.capture().then(function (details) {
+          var payload = {
+            payID: details.id,
+            currency_code: details.purchase_units[0].amount.currency_code,
+            total: details.purchase_units[0].amount.value,
+            payer_fullname:
+              details.payer.name.given_name + ' ' + details.payer.name.surname,
+          };
+          $.ajax({
+            url: "{% url 'create-subactive' %}",
+            type: 'POST',
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            data: JSON.stringify(payload),
+            contentType: 'application/json',
+            success: function (response) {
+              console.log(response);
+              window.location.href = "{% url 'create-subactive' %}";
+            },
+            error: function (xhr, status, error) {
+              console.log(error);
+            },
+          });
+          
+        });
+      },
+      onCancel: function (data) {
+        alert('Payment canceled by the user');
+      },
+      onError: function (err) {
+        alert('An error occurred during payment');
+        console.error(err);
+      },
+    })
+    .render('#paypal-button-container');
+</script>
+{% endblock scripts %}
+{% endblock content %}

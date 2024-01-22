@@ -1,0 +1,71 @@
+{
+    "id": "0NK41316ER1373939",
+    "intent": "CAPTURE",
+    "status": "COMPLETED",
+    "purchase_units": [
+        {
+            "reference_id": "default",
+            "amount": {
+                "currency_code": "USD",
+                "value": "70.00"
+            },
+            "payee": {
+                "email_address": "american@business.example.com",
+                "merchant_id": "SK98GBRJHP86U"
+            },
+            "shipping": {
+                "name": {
+                    "full_name": "John Doe"
+                },
+                "address": {
+                    "address_line_1": "Free Trade Zone",
+                    "admin_area_2": "Riyadh",
+                    "postal_code": "11543",
+                    "country_code": "SA"
+                }
+            },
+            "payments": {
+                "captures": [
+                    {
+                        "id": "4X265050BE993211R",
+                        "status": "COMPLETED",
+                        "amount": {
+                            "currency_code": "USD",
+                            "value": "70.00"
+                        },
+                        "final_capture": true,
+                        "seller_protection": {
+                            "status": "ELIGIBLE",
+                            "dispute_categories": [
+                                "ITEM_NOT_RECEIVED",
+                                "UNAUTHORIZED_TRANSACTION"
+                            ]
+                        },
+                        "create_time": "2023-06-16T20:29:52Z",
+                        "update_time": "2023-06-16T20:29:52Z"
+                    }
+                ]
+            }
+        }
+    ],
+    "payer": {
+        "name": {
+            "given_name": "John",
+            "surname": "Doe"
+        },
+        "email_address": "sb-icosj25748450@personal.example.com",
+        "payer_id": "DWSF8L44M9J7Y",
+        "address": {
+            "country_code": "SA"
+        }
+    },
+    "create_time": "2023-06-16T20:29:43Z",
+    "update_time": "2023-06-16T20:29:52Z",
+    "links": [
+        {
+            "href": "https://api.sandbox.paypal.com/v2/checkout/orders/0NK41316ER1373939",
+            "rel": "self",
+            "method": "GET"
+        }
+    ]
+}

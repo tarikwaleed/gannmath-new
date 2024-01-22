@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="m-auto w-75 text-center">
+    <form method="POST" action="{% url 'save-telegram' %}">
+        {% csrf_token %}
+        <h3>Welcome {{ payer_fullname }}</h3>
+        <h3>payment id : {{ payID }}</h3>
+        <h3>Your plan: {{ is_planType }}</h3>
+        <p>Send a link to your account in the Telegram application to add you to the private group</p>
+        <input type="hidden" name="ido" value="{{ ido }}">
+        <p>Your account on Telegram: <input type="text" name="nameTelegram" class="form-control">&nbsp;&nbsp;<input type="submit" name="send" value="send" class="btn btn-sm btn-primary"></p>
+    </form>
+</div>
+
+{% endblock content %}

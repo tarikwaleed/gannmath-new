@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
+    <div class="m-5">
     <form method="POST" action="{% url 'calculate' %}">
         {% csrf_token %}
+
+        <div id="cal-left">
+
         <div class="d-flex flex-column mb-3 align-items-center "
-             style="margin-top:100px">
+             style="margin-top:30px">
             {% comment %} X input {% endcomment %}
             <div class="col-md-4 mb-3">
                 <div class="d-flex align-items-center">
@@ -13,7 +17,8 @@
                            id="x-input"
                            name="x"
                            required
-                           value="6.2">
+                           value={{ previous_x }}
+                           >
                 </div>
             </div>
             {% comment %} Y input {% endcomment %}
@@ -25,7 +30,9 @@
                            id="y-input"
                            name="y"
                            required
-                           value="6.37">
+                           value={{ previous_y }}
+                           >
+                           
                 </div>
             </div>
         </div>
@@ -52,88 +59,99 @@
             <span id="slider-value"></span>
         </div>
         {% comment %} Z Labels {% endcomment %}
-        <div class="text-center d-flex justify-content-between fs-1">
-            <span style="margin-left:35 ;"></span>
+        <div class="text-center d-flex justify-content-between fs-2">
+            
             <span>-D</span>
+            <span id="ab"></span>
             <span>-C</span>
+            <span id="abb"></span>
             <span>-B</span>
             <span>A</span>
             <span>B</span>
             <span>C</span>
             <span>D</span>
-            <span style=" margin-right:40 ;"></span>
+            <!--<span style=" margin-right:40 ;"></span>-->
         </div>
         {% comment %} Calculate Button {% endcomment %}
         <div class="d-flex justify-content-center">
             <button type="submit"
-                    class="btn btn-secondary"
-                    style="background-color: #9fd3c7;
-                           font-weight: bold;
-                           font-size: 25px;
-                           border:none">Calculate</button>
+                    class="btn btn-secondary" id="calculate-btn">Calculate</button>
         </div>
+
+    </div>
+
+    <div id="cal-right">
+
         {% comment %} Tables {% endcomment %}
-        <div class="row">
-            <div class="d-flex justify-content-around range-contaner">
+        <div class="clearfix"></div>
+        <div class="wdth">
+            <div class="d-flex justify-content-around">
                 {% comment %} Levels Table {% endcomment %}
-                <table id="levels-table" class='table table-hover m-2'>
+                <table class="w-100">
                     <thead>
-                        <tr class='table-secondary'>
-                            <th>Levels</th>
+                        <tr class="border-bottom">
+                            <th>Fibonacci</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr class="border-bottom">
                             <td>25%</td>
                         </tr>
-                        <tr class='table-info'>
+                        <tr class="border-bottom">
                             <td>38.2%</td>
                         </tr>
-                        <tr>
+                        <tr class="border-bottom">
                             <td>50%</td>
                         </tr>
-                        <tr class='table-info'>
+                        <tr class="border-bottom">
                             <td>61.8%</td>
                         </tr>
-                        <tr>
+                        <tr class="border-bottom">
                             <td>75%</td>
                         </tr>
-                        <tr class='table-info'>
+                        <tr class="border-bottom">
                             <td>100%</td>
                         </tr>
                     </table>
                     {% comment %} Angles Table {% endcomment %}
-                    <table id="angles-table" class="table table-hover m-2">
+                    <table id="angles-table" class="w-100">
                         <thead>
-                            <tr class="table-secondary">
+                            <tr class="border-bottom">
                                 <th>Angles</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for angle in angles %}
-                                <tr id="angle-{{ forloop.counter0 }}" {% cycle 'class="table-info"' '' %}>
+                                <tr class="border-bottom" id="angle-0 angle-{{ forloop.counter0 }}" {% cycle 'class="table-info"' '' %}>
                                     <td>{{ angle }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                     {% comment %} Prices Table {% endcomment %}
-                    <table id="prices-table" class="table table-hover m-2">
+                    <table id="prices-table" class="w-100">
                         <thead>
-                            <tr class="table-secondary">
-                                <th>Price Values</th>
+                            <tr class="border-bottom">
+                                <th>Values</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for result in results %}
-                                <tr {% cycle 'class="table-info"' '' %}>
+                                <tr class="border-bottom" {% cycle 'class="table-info"' '' %}>
                                     <td id="result-{{ forloop.counter0 }}">{{ result|floatformat:5 }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
+                
             </div>
+
+        </div>
+        </form>
+</div>
+<div class="clearfix mb-5"></div>
+
             {% comment %} Video Section {% endcomment %}
             <iframe class="embed-responsive-item"
                     src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"
@@ -168,5 +186,4 @@
                     adipisicing elit. quae reprehenderit
                 </p>
             </div>
-        </form>
     {% endblock %}
